@@ -1,3 +1,5 @@
+package org.ftc7244.datalogger;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;

@@ -10,9 +10,9 @@
 <?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane prefHeight="322.0" prefWidth="380.0" styleClass="window" stylesheets="@style.css" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="322.0" prefWidth="380.0" styleClass="window" stylesheets="@style.css" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ftc7244.datalogger.controllers.InternalWindow">
    <center>
-      <LineChart BorderPane.alignment="CENTER">
+      <LineChart fx:id="lineGraph" BorderPane.alignment="CENTER">
          <xAxis>
             <CategoryAxis side="BOTTOM" />
          </xAxis>
@@ -22,9 +22,9 @@
       </LineChart>
    </center>
    <top>
-      <BorderPane prefHeight="23.0" prefWidth="380.0" styleClass="top-bar" BorderPane.alignment="CENTER">
+      <BorderPane onDragDetected="#onBarDrag" onMouseEntered="#onMouseEnterBar" onMouseExited="#onMouseExitBar" onMousePressed="#onBarPressed" onMouseReleased="#onBarReleased" prefHeight="23.0" prefWidth="380.0" styleClass="top-bar" BorderPane.alignment="CENTER">
          <right>
-            <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="42.0" styleClass="exit" text="✕" textFill="#222222" translateY="-1.0" BorderPane.alignment="CENTER" />
+            <Button mnemonicParsing="false" onAction="#onCloseGraph" prefHeight="30.0" prefWidth="42.0" styleClass="exit" text="✕" textFill="#222222" translateY="-1.0" BorderPane.alignment="CENTER" />
          </right>
          <left>
             <Label styleClass="title" text="Title" textAlignment="CENTER" textFill="#222222" BorderPane.alignment="CENTER">
@@ -38,9 +38,9 @@
    <bottom>
       <ButtonBar prefHeight="11.0" prefWidth="378.0" styleClass="options" BorderPane.alignment="CENTER">
          <buttons>
-            <Button mnemonicParsing="false" text="Clear" />
-            <Button mnemonicParsing="false" text="Export" />
-            <SplitMenuButton mnemonicParsing="false" text="Merge" />
+            <Button mnemonicParsing="false" onAction="#onClearGraph" text="Clear" />
+            <Button mnemonicParsing="false" onAction="#onExportGraph" text="Export" />
+            <SplitMenuButton fx:id="mergeDropdown" focusTraversable="false" mnemonicParsing="false" text="Merge" />
          </buttons>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
