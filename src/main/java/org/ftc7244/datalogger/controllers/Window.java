@@ -1,8 +1,13 @@
 package org.ftc7244.datalogger.controllers;
 
+import com.sun.deploy.util.FXLoader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+
+import java.io.IOException;
 
 public class Window {
 
@@ -10,18 +15,33 @@ public class Window {
     private AnchorPane contentPane;
 
     @FXML
-    void onConnect(ActionEvent event) {
+    protected void onConnect(ActionEvent event) {
+        addGraph("Test");
+    }
+
+    @FXML
+    protected void onHardRest(ActionEvent event) {
 
     }
 
     @FXML
-    void onHardRest(ActionEvent event) {
+    protected void onStartADB(ActionEvent event) {
 
     }
 
-    @FXML
-    void onStartADB(ActionEvent event) {
+    private InternalWindow addGraph(String title) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/internal-window.fxml"));
+        try {
+            Pane load = loader.load();
+            contentPane.getChildren().add(load);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
 
+        InternalWindow controller = loader.getController();
+        controller.setTitle(title);
+        return controller;
     }
 
 }

@@ -1,65 +1,92 @@
 package org.ftc7244.datalogger.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.chart.LineChart;
+import javafx.scene.control.Label;
 import javafx.scene.control.SplitMenuButton;
 import javafx.scene.input.MouseEvent;
-import org.ftc7244.datalogger.DataLogger;
-
-import java.awt.event.ActionEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 
 public class InternalWindow {
 
-    private boolean dragging;
-
-    public InternalWindow() {
-
-    }
-
+    @FXML
+    public BorderPane node;
     @FXML
     private LineChart<?, ?> lineGraph;
-
+    @FXML
+    private Label titleLabel;
     @FXML
     private SplitMenuButton mergeDropdown;
 
+    private double xDragDelta, yDragDelta, mouseX, mouseY;
+
+    public InternalWindow() {
+        xDragDelta = 0;
+        yDragDelta = 0;
+        mouseX = 0;
+        mouseY = 0;
+    }
+
+    public void setTitle(String title) {
+        this.titleLabel.setText(title);
+    }
+
     @FXML
-    void onBarDrag(MouseEvent event) {
+    protected void onBarDragged(MouseEvent event) {
+        double offsetX = event.getSceneX() - mouseX;
+        double offsetY = event.getSceneY() - mouseY;
+
+        xDragDelta += offsetX;
+        yDragDelta += offsetY;
+
+        Pane pane = (Pane) node.getParent();
+        node.setLayoutX(constrict(xDragDelta, 0, pane.getWidth() - node.getWidth()));
+        node.setLayoutY(constrict(yDragDelta, 0, pane.getHeight() - node.getHeight()));
+
+        // again set current Mouse x AND y position
+        mouseX = event.getSceneX();
+        mouseY = event.getSceneY();
+    }
+
+    @FXML
+    protected void onBarPressed(MouseEvent event) {
+        mouseX = event.getSceneX();
+        mouseY = event.getSceneY();
+
+        xDragDelta = node.getLayoutX();
+        yDragDelta = node.getLayoutY();
+
+        node.toFront();
+    }
+
+    @FXML
+    protected void onClearGraph(ActionEvent event) {
 
     }
 
     @FXML
-    void onBarPressed(MouseEvent event) {
-    }
-
-    @FXML
-    void onBarReleased(MouseEvent event) {
+    protected void onExit(ActionEvent event) {
 
     }
 
     @FXML
-    void onClearGraph(ActionEvent event) {
+    protected void onExportGraph(ActionEvent event) {
 
     }
 
-    @FXML
-    void onCloseGraph(ActionEvent event) {
+    private double constrict(double value, double min, double max) {
+        if (value < min) {
+            return min;
+        }
 
-    }
+        if (value > max) {
+            return max;
+        }
 
-    @FXML
-    void onExportGraph(ActionEvent event) {
-
-    }
-
-    @FXML
-    void onMouseEnterBar(MouseEvent event) {
-
-    }
-
-    @FXML
-    void onMouseExitBar(MouseEvent event) {
-
+        return value;
     }
 
 }
