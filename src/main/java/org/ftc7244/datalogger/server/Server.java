@@ -41,7 +41,18 @@ public class Server implements Runnable {
 
     }
 
+    /**
+     *
+     * @param message the message received from the android device
+     */
+
     public void messageReceived(String message){
+        String[] sections = message.split(":");
+        String tag = sections[0];
+        double[] data = new double[sections.length-1];
+        for (int i = 1; i < sections.length; i++) {
+            data[i-1] = Double.parseDouble(sections[i]);
+        }
 
     }
 
