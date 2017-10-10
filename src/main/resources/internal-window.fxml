@@ -11,7 +11,7 @@
 <?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane fx:id="node" prefHeight="322.0" prefWidth="380.0" styleClass="window" stylesheets="@style.css" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ftc7244.datalogger.controllers.InternalWindow">
+<BorderPane onMouseReleased="#onResizeReleased" onMousePressed="#onResizePressed" onMouseMoved="#onResizeOver" onMouseDragged="#onResizeDragged" fx:id="node" prefHeight="322.0" prefWidth="380.0" styleClass="window" stylesheets="@style.css" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ftc7244.datalogger.controllers.InternalWindow">
    <center>
       <LineChart fx:id="lineGraph" BorderPane.alignment="CENTER">
          <xAxis>

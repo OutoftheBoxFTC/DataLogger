@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.net.URL;
 
 /**
@@ -23,9 +24,21 @@ public class DataLogger extends Application {
         URL resource = getClass().getResource("/window.fxml");
         Parent root = FXMLLoader.load(resource);
         stage.setTitle("Data Logger");
-        stage.getIcons().addAll(new Image("./icon.png"));
         stage.setScene(new Scene(root));
         stage.setOnCloseRequest(event -> Platform.exit());
+        setAppIcon(stage, "/icon.png");
         stage.show();
-    }
+
+	}
+
+	private static void setAppIcon(Stage stage, String icon) {
+    	try {
+    		String path = DataLogger.class.getResource(icon).getPath();
+			com.apple.eawt.Application application = com.apple.eawt.Application.getApplication();
+			application.setDockIconImage(Toolkit.getDefaultToolkit().getImage(path));
+		} catch (Exception ignore) {
+    		//not a mac
+		}
+		stage.getIcons().addAll(new Image(icon));
+	}
 }
