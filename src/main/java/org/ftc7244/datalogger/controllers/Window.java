@@ -29,7 +29,7 @@ public class Window {
 
     }
 
-    private InternalWindow addGraph(String title) {
+    protected InternalWindow addGraph(String title) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/internal-window.fxml"));
         try {
             Pane load = loader.load();
@@ -41,7 +41,7 @@ public class Window {
 
         InternalWindow controller = loader.getController();
         controller.setTitle(title);
+        controller.addWindowExitListener((listener, pane) -> contentPane.getChildren().remove(pane));
         return controller;
     }
-
 }

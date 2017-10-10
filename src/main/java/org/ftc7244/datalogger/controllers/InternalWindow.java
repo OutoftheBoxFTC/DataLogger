@@ -2,13 +2,16 @@ package org.ftc7244.datalogger.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitMenuButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import org.ftc7244.datalogger.listeners.OnInternalWindowExit;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class InternalWindow {
 
@@ -22,16 +25,22 @@ public class InternalWindow {
     private SplitMenuButton mergeDropdown;
 
     private double xDragDelta, yDragDelta, mouseX, mouseY;
+    private List<OnInternalWindowExit> exitListeners;
 
     public InternalWindow() {
         xDragDelta = 0;
         yDragDelta = 0;
         mouseX = 0;
         mouseY = 0;
+        exitListeners = new ArrayList<>();
     }
 
     public void setTitle(String title) {
         this.titleLabel.setText(title);
+    }
+
+    public void addWindowExitListener(OnInternalWindowExit listener) {
+        exitListeners.add(listener);
     }
 
     @FXML
@@ -69,7 +78,9 @@ public class InternalWindow {
 
     @FXML
     protected void onExit(ActionEvent event) {
-
+        for (OnInternalWindowExit listener : exitListeners) {
+            listener.onInternalWindowExit(this, node);
+        }
     }
 
     @FXML
