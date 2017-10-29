@@ -1,36 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.225752508361204" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ftc7244.datalogger.controllers.Window">
+<SplitPane dividerPositions="0.225752508361204" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="920.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ftc7244.datalogger.controllers.Window">
    <items>
-      <VBox fillWidth="false" maxWidth="145.0" minWidth="145.0" prefHeight="398.0" prefWidth="145.0" spacing="5.0" SplitPane.resizableWithParent="false">
+      <VBox fillWidth="false" maxWidth="180.0" minWidth="180.0" prefHeight="550.0" prefWidth="180.0" spacing="5.0" SplitPane.resizableWithParent="false">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="145.0" text="Phone Controller" textAlignment="CENTER">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="180.0" text="Phone Controller" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
             <Separator prefWidth="200.0" />
-            <Button mnemonicParsing="false" onAction="#onConnect" prefHeight="25.0" prefWidth="145.0" text="Connect" />
-            <Button mnemonicParsing="false" onAction="#onHardRest" prefHeight="25.0" prefWidth="145.0" text="Hard Reset" />
-            <Button mnemonicParsing="false" onAction="#onStartADB" prefHeight="25.0" prefWidth="145.0" text="Start ADB" />
+            <Button mnemonicParsing="false" onAction="#onConnect" prefHeight="25.0" prefWidth="180.0" text="Connect" />
+            <Button mnemonicParsing="false" onAction="#onHardRest" prefHeight="25.0" prefWidth="180.0" text="Hard Reset" />
+            <Button mnemonicParsing="false" onAction="#onStartADB" prefHeight="25.0" prefWidth="180.0" text="Start ADB" />
             <Separator prefWidth="200.0" />
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="145.0" text="Status" textAlignment="CENTER">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="180.0" text="Status" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
             <Separator prefWidth="200.0" />
-            <BorderPane prefHeight="20.0" prefWidth="145.0">
+            <BorderPane prefHeight="20.0" prefWidth="180.0">
                <left>
                   <Label text="Connected:" BorderPane.alignment="CENTER" />
                </left>
@@ -38,7 +33,7 @@
                   <Label text="Yes" BorderPane.alignment="CENTER" />
                </right>
             </BorderPane>
-            <BorderPane layoutX="10.0" layoutY="126.0" prefHeight="20.0" prefWidth="145.0">
+            <BorderPane layoutX="10.0" layoutY="126.0" prefHeight="20.0" prefWidth="180.0">
                <left>
                   <Label text="ADB:" BorderPane.alignment="CENTER" />
                </left>
@@ -46,11 +41,34 @@
                   <Label text="Yes" BorderPane.alignment="CENTER" />
                </right>
             </BorderPane>
+            <Separator prefWidth="200.0" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="180.0" text="Variable Controller" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Separator prefWidth="200.0">
+               <VBox.margin>
+                  <Insets left="-5.0" right="-5.0" />
+               </VBox.margin>
+            </Separator>
+            <ScrollPane fitToWidth="true" prefHeight="445.0" prefWidth="180.0" style="-fx-background-color: transparent;">
+               <content>
+                  <VBox fx:id="variables" minWidth="160.0" prefHeight="200.0" prefWidth="160.0" spacing="4.0">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </VBox>
+               </content>
+               <VBox.margin>
+                  <Insets bottom="-10.0" left="-5.0" right="-5.0" top="-8.0" />
+               </VBox.margin>
+            </ScrollPane>
          </children>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </VBox>
-      <AnchorPane fx:id="contentPane" minHeight="0.0" minWidth="0.0" prefHeight="30.0" prefWidth="169.0" style="-fx-font-color: red;" />
+      <AnchorPane fx:id="contentPane" minHeight="0.0" minWidth="0.0" prefHeight="451.0" prefWidth="524.0" style="-fx-font-color: red;" />
    </items>
 </SplitPane>
