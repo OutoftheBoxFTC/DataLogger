@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.225752508361204" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="920.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ftc7244.datalogger.controllers.Window">
+<SplitPane dividerPositions="0.225752508361204" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="920.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ftc7244.datalogger.controllers.Window">
    <items>
       <VBox fillWidth="false" maxWidth="180.0" minWidth="180.0" prefHeight="550.0" prefWidth="180.0" spacing="5.0" SplitPane.resizableWithParent="false">
          <children>
@@ -15,9 +22,8 @@
                </font>
             </Label>
             <Separator prefWidth="200.0" />
-            <Button mnemonicParsing="false" onAction="#onConnect" prefHeight="25.0" prefWidth="180.0" text="Connect" />
+            <MenuButton fx:id="devices" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="180.0" text="Connect" textAlignment="CENTER" />
             <Button mnemonicParsing="false" onAction="#onHardRest" prefHeight="25.0" prefWidth="180.0" text="Hard Reset" />
-            <Button mnemonicParsing="false" onAction="#onStartADB" prefHeight="25.0" prefWidth="180.0" text="Start ADB" />
             <Separator prefWidth="200.0" />
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="180.0" text="Status" textAlignment="CENTER">
                <font>
@@ -30,7 +36,7 @@
                   <Label text="Connected:" BorderPane.alignment="CENTER" />
                </left>
                <right>
-                  <Label text="Yes" BorderPane.alignment="CENTER" />
+                  <Label fx:id="connectionStatus" text="No" textFill="RED" BorderPane.alignment="CENTER" />
                </right>
             </BorderPane>
             <BorderPane layoutX="10.0" layoutY="126.0" prefHeight="20.0" prefWidth="180.0">
@@ -38,7 +44,7 @@
                   <Label text="ADB:" BorderPane.alignment="CENTER" />
                </left>
                <right>
-                  <Label text="Yes" BorderPane.alignment="CENTER" />
+                  <Label fx:id="adbStatus" text="No" textFill="RED" BorderPane.alignment="CENTER" />
                </right>
             </BorderPane>
             <Separator prefWidth="200.0" />

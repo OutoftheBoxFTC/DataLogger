@@ -1,6 +1,7 @@
 package org.ftc7244.datalogger.controllers;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.chart.LineChart;
@@ -44,7 +45,6 @@ public class InternalWindow {
 
 		node.setMinWidth(node.getPrefWidth());
 		node.setMinHeight(node.getPrefHeight());
-		node.getBottom().setMouseTransparent(true);
 	}
 
 	public void setTitle(String title) {
