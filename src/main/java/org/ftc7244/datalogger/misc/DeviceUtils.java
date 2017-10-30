@@ -37,18 +37,22 @@ public class DeviceUtils {
 	}
 
 	public static Optional<String> getIPAddress(JadbDevice device) {
+		String output = null;
 		try {
-			String output = toString(device.executeShell("ifconfig", "wlan0"));
-			Pattern pattern = Pattern.compile("addr:(?<name>(\\d{1,3}\\.){3}\\d{1,3})");
+			output = toString(device.executeShell("ifconfig", "wlan0"));
+			Pattern pattern = Pattern.compile("addr:(?<ip>(\\d{1,3}\\.){3}\\d{1,3})");
 			Matcher matcher = pattern.matcher(output);
-			return Optional.of(matcher.group("ip"));
+			if (matcher.find())
+				return Optional.of(matcher.group("ip"));
 		} catch (Exception e) {
 			e.printStackTrace();
-			return Optional.empty();
 		}
+		if (output != null)
+			System.err.println(output);
+		return Optional.empty();
 	}
 
-	private static String toString(InputStream stream) {
+	protected static String toString(InputStream stream) {
 		Scanner s = new Scanner(stream).useDelimiter("\\A");
 		return s.hasNext() ? s.next().trim() : "";
 	}

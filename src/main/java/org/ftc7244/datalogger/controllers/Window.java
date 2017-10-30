@@ -5,20 +5,18 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import org.ftc7244.datalogger.DataLogger;
-import org.ftc7244.datalogger.listeners.OnReceiveData;
-import org.ftc7244.datalogger.misc.DeviceUtils;
-import org.ftc7244.datalogger.misc.DataStreamer;
 import org.ftc7244.datalogger.listeners.OnConnectionUpdate;
+import org.ftc7244.datalogger.listeners.OnReceiveData;
+import org.ftc7244.datalogger.misc.ADBUtils;
+import org.ftc7244.datalogger.misc.DataStreamer;
+import org.ftc7244.datalogger.misc.DeviceUtils;
 import se.vidstige.jadb.JadbConnection;
 import se.vidstige.jadb.JadbDevice;
 
@@ -36,24 +34,22 @@ public class Window implements OnReceiveData, OnConnectionUpdate {
 	private static final int GRAPH_OFFSET = 20;
 
 	@FXML
+	public Button adbButton;
+	@FXML
 	private Label adbStatus, connectionStatus;
-
 	@FXML
 	private MenuButton devices;
-	private int devicesHashCode;
-
 	@FXML
 	private VBox variables;
-
 	@FXML
 	private AnchorPane contentPane;
+	@FXML
+	private DataStreamer streamer;
 
 	private JadbConnection connection;
-
 	private ArrayList<InternalWindow> windows;
-
+	private int devicesHashCode;
 	private double xGraphOffset, yGraphOffset;
-	private DataStreamer streamer;
 
 	@FXML
 	protected void initialize() {
@@ -78,7 +74,8 @@ public class Window implements OnReceiveData, OnConnectionUpdate {
 				connection = null;
 				connected = false;
 			}
-			updateStatus(connected, adbStatus);
+
+			setADBStatus(connected);
 
 		}, 0, 100, TimeUnit.MILLISECONDS);
 	}
@@ -88,16 +85,29 @@ public class Window implements OnReceiveData, OnConnectionUpdate {
 
 	}
 
+	@FXML
+	public void onRefreshADB(ActionEvent event) {
+		DataLogger.getService().execute(() -> {
+			if (connection == null) {
+				ADBUtils.start();
+			} else {
+				ADBUtils.stop();
+				ADBUtils.start();
+			}
+		});
+	}
+
 	private void connect(JadbDevice device) {
 		Optional<String> optionalAddress = DeviceUtils.getIPAddress(device);
 		if (optionalAddress.isPresent()) {
 			streamer = new DataStreamer(optionalAddress.get())
-				.addConnectionListener(this)
-				.addDataListener(this)
-				.start();
+					.addConnectionListener(this)
+					.addDataListener(this)
+					.start();
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Invalid IP!");
+			alert.setHeaderText("Invalid IP!");
 			alert.setContentText("We were unable to parse a valid IP address from the device. Please check the console for more info!");
 			alert.show();
 		}
@@ -147,11 +157,17 @@ public class Window implements OnReceiveData, OnConnectionUpdate {
 		});
 	}
 
-	private void updateStatus(boolean status, Label label) {
+	private void setADBStatus(boolean running) {
 		Platform.runLater(() -> {
-			label.setText(status ? "Yes" : "No");
-			label.setTextFill(status ? Color.GREEN : Color.RED);
+			adbButton.setText((running ? "Refresh" : "Start") + " ADB");
+			adbButton.setDisable(false);
+			updateStatus(running, adbStatus);
 		});
+	}
+
+	private void updateStatus(boolean status, Label label) {
+		label.setText(status ? "Yes" : "No");
+		label.setTextFill(status ? Color.GREEN : Color.RED);
 	}
 
 	@Override
