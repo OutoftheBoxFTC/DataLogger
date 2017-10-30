@@ -11,7 +11,6 @@ import javafx.stage.Stage;
 import java.awt.*;
 import java.lang.reflect.Method;
 import java.net.URL;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -20,41 +19,41 @@ import java.util.concurrent.ScheduledExecutorService;
  */
 public class DataLogger extends Application {
 
-    private static ScheduledExecutorService service;
+	private static ScheduledExecutorService service;
 
-    public static ScheduledExecutorService getService() {
-        return service;
-    }
+	public static ScheduledExecutorService getService() {
+		return service;
+	}
 
-    public static void main(String[] args) {
-        service = Executors.newScheduledThreadPool(4);
-        Application.launch(args);
-    }
-
-    public void start(Stage stage) throws Exception {
-        URL resource = getClass().getResource("/window.fxml");
-        Parent root = FXMLLoader.load(resource);
-        stage.setTitle("Data Logger");
-        stage.setScene(new Scene(root));
-        stage.setOnCloseRequest(event -> {
-            Platform.exit();
-            service.shutdown();
-        });
-        setAppIcon(stage, "/icon.png");
-        stage.show();
-
+	public static void main(String[] args) {
+		service = Executors.newScheduledThreadPool(4);
+		Application.launch(args);
 	}
 
 	private static void setAppIcon(Stage stage, String icon) {
-    	try {
-    		String path = DataLogger.class.getResource(icon).getPath();
-            Class<?> application = Class.forName("com.apple.eawt.Application");
-            Object instance =  application.getMethod("getApplication").invoke(null);
-            Method setDockIconImage = application.getMethod("setDockIconImage");
-            setDockIconImage.invoke(instance, Toolkit.getDefaultToolkit().getImage(path));
+		try {
+			String path = DataLogger.class.getResource(icon).getPath();
+			Class<?> application = Class.forName("com.apple.eawt.Application");
+			Object instance = application.getMethod("getApplication").invoke(null);
+			Method setDockIconImage = application.getMethod("setDockIconImage", java.awt.Image.class);
+			setDockIconImage.invoke(instance, Toolkit.getDefaultToolkit().getImage(path));
 		} catch (Exception ignore) {
-    		//not a mac
+			//not a mac
 		}
 		stage.getIcons().addAll(new Image(icon));
+	}
+
+	public void start(Stage stage) throws Exception {
+		URL resource = getClass().getResource("/window.fxml");
+		Parent root = FXMLLoader.load(resource);
+		stage.setTitle("Data Logger");
+		stage.setScene(new Scene(root));
+		stage.setOnCloseRequest(event -> {
+			Platform.exit();
+			service.shutdown();
+		});
+		setAppIcon(stage, "/icon.png");
+		stage.show();
+
 	}
 }
