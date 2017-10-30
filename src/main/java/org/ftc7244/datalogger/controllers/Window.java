@@ -113,7 +113,7 @@ public class Window implements OnReceiveData, OnConnectionUpdate {
 		}
 	}
 
-	protected InternalWindow addGraph(String title) {
+	protected InternalWindow createGraph(String title) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/internal-window.fxml"));
 		try {
 			Pane load = loader.load();

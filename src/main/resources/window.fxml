@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.225752508361204" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="920.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ftc7244.datalogger.controllers.Window">
+<SplitPane dividerPositions="0.225752508361204" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="350.0" minWidth="570.0" prefHeight="550.0" prefWidth="920.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ftc7244.datalogger.controllers.Window">
    <items>
       <VBox fillWidth="false" maxWidth="180.0" minWidth="180.0" prefHeight="550.0" prefWidth="180.0" spacing="5.0" SplitPane.resizableWithParent="false">
          <children>
