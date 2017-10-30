@@ -5,6 +5,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
@@ -13,7 +15,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import org.ftc7244.datalogger.DataLogger;
-import org.ftc7244.datalogger.DeviceUtils;
+import org.ftc7244.datalogger.listeners.OnReceiveData;
+import org.ftc7244.datalogger.misc.DeviceUtils;
+import org.ftc7244.datalogger.misc.DataStreamer;
+import org.ftc7244.datalogger.listeners.OnConnectionUpdate;
 import se.vidstige.jadb.JadbConnection;
 import se.vidstige.jadb.JadbDevice;
 
@@ -22,10 +27,11 @@ import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-public class Window {
+public class Window implements OnReceiveData, OnConnectionUpdate {
 
 	private static final int GRAPH_OFFSET = 20;
 
@@ -47,6 +53,7 @@ public class Window {
 	private ArrayList<InternalWindow> windows;
 
 	private double xGraphOffset, yGraphOffset;
+	private DataStreamer streamer;
 
 	@FXML
 	protected void initialize() {
@@ -81,13 +88,19 @@ public class Window {
 
 	}
 
-	@FXML
-	protected void onStartADB(ActionEvent event) {
-
-	}
-
 	private void connect(JadbDevice device) {
-
+		Optional<String> optionalAddress = DeviceUtils.getIPAddress(device);
+		if (optionalAddress.isPresent()) {
+			streamer = new DataStreamer(optionalAddress.get())
+				.addConnectionListener(this)
+				.addDataListener(this)
+				.start();
+		} else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Invalid IP!");
+			alert.setContentText("We were unable to parse a valid IP address from the device. Please check the console for more info!");
+			alert.show();
+		}
 	}
 
 	protected InternalWindow addGraph(String title) {
@@ -139,5 +152,15 @@ public class Window {
 			label.setText(status ? "Yes" : "No");
 			label.setTextFill(status ? Color.GREEN : Color.RED);
 		});
+	}
+
+	@Override
+	public void onConnectionUpdate(boolean connected, Exception exception) {
+
+	}
+
+	@Override
+	public void onReceiveData(String graph, double[] values) {
+
 	}
 }
