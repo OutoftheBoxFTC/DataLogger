@@ -51,10 +51,10 @@ public class DataStreamer {
 			socket = new Socket(ip, port);
 			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			this.onConnectionUpdates.forEach(x -> x.onConnectionUpdate(true, null));
-			while (!Thread.currentThread().isInterrupted() && running.get()) {
+			while (!Thread.currentThread().isInterrupted()) {
 				String[] split = in.readLine().split(":");
 				String tag = split[0];
-				double[] data = new double[tag.length() - 1];
+				double[] data = new double[split.length - 1];
 				for (int i = 1; i < split.length; i++)
 					data[i - 1] = Double.parseDouble(split[i]);
 				this.onDataReceived.forEach(x -> x.onReceiveData(tag, data));

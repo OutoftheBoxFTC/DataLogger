@@ -106,7 +106,7 @@ public class Window implements OnReceiveData, OnConnectionUpdate {
 			devices.setDisable(false);
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Invalid IP!");
-			alert.setHeaderText("Invalid IP!");
+			alert.setHeaderText("App Not sSarted!");
 			alert.setContentText("We were unable to parse a valid IP address from the device. Please check the console for more info!");
 			alert.show();
 		}
@@ -188,6 +188,6 @@ public class Window implements OnReceiveData, OnConnectionUpdate {
 
 	@Override
 	public void onReceiveData(String graph, double[] values) {
-		System.out.println("Recieved: " + Arrays.toString(values));
+		System.out.println("Received: " + Arrays.toString(values));
 	}
 }
