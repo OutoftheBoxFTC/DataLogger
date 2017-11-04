@@ -1,5 +1,8 @@
 package org.ftc7244.datalogger.misc;
 
+import java.io.File;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.nio.file.Paths;
 
 /**
@@ -29,7 +32,11 @@ public class ADBUtils {
 
 		try {
 			String[] commandGroup = new String[args.length + 2];
-			commandGroup[0] = ADBUtils.class.getResource(getOperatingSystem().ADB_PATH).getPath();
+			String path = ADBUtils.class.getResource(getOperatingSystem().ADB_PATH).getFile();
+			path = URLDecoder.decode(path, "UTF-8");
+			path = new File(path).getAbsolutePath();
+
+			commandGroup[0] = path;
 			commandGroup[1] = command;
 			System.arraycopy(args, 0, commandGroup, 2, args.length);
 

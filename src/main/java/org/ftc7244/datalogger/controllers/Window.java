@@ -22,10 +22,7 @@ import se.vidstige.jadb.JadbDevice;
 
 import java.io.IOException;
 import java.net.ConnectException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -99,12 +96,14 @@ public class Window implements OnReceiveData, OnConnectionUpdate {
 
 	private void connect(JadbDevice device) {
 		Optional<String> optionalAddress = DeviceUtils.getIPAddress(device);
+		devices.setDisable(true);
 		if (optionalAddress.isPresent()) {
 			streamer = new DataStreamer(optionalAddress.get())
 					.addConnectionListener(this)
 					.addDataListener(this)
 					.start();
 		} else {
+			devices.setDisable(false);
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Invalid IP!");
 			alert.setHeaderText("Invalid IP!");
@@ -172,11 +171,23 @@ public class Window implements OnReceiveData, OnConnectionUpdate {
 
 	@Override
 	public void onConnectionUpdate(boolean connected, Exception exception) {
-
+		Platform.runLater(() -> {
+			if (exception != null) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Device Connection Error!");
+				alert.setHeaderText("We are unable to connect to the device!");
+				alert.setContentText(exception.getMessage());
+				alert.show();
+				exception.printStackTrace();
+			}
+			devices.setDisable(connected);
+			updateStatus(connected, connectionStatus);
+		});
+		System.out.println("We are connected: " + connected);
 	}
 
 	@Override
 	public void onReceiveData(String graph, double[] values) {
-
+		System.out.println("Recieved: " + Arrays.toString(values));
 	}
 }
