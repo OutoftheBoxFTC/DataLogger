@@ -181,4 +181,8 @@ public class InternalWindow {
 
 		return value;
 	}
+
+    public void update(double[] values) {
+
+    }
 }

@@ -44,7 +44,7 @@ public class Window implements OnReceiveData, OnConnectionUpdate {
 	private DataStreamer streamer;
 
 	private JadbConnection connection;
-	private ArrayList<InternalWindow> windows;
+	private Map<String, InternalWindow> windows;
 	private int devicesHashCode;
 	private double xGraphOffset, yGraphOffset;
 
@@ -53,7 +53,7 @@ public class Window implements OnReceiveData, OnConnectionUpdate {
 		this.xGraphOffset = 0;
 		this.yGraphOffset = 0;
 		this.devicesHashCode = -1;
-		this.windows = new ArrayList<>();
+		this.windows = new HashMap<>();
 		DataLogger.getService().scheduleAtFixedRate(() -> {
 			boolean connected = true;
 			try {
@@ -189,5 +189,9 @@ public class Window implements OnReceiveData, OnConnectionUpdate {
 	@Override
 	public void onReceiveData(String graph, double[] values) {
 		System.out.println("Received: " + Arrays.toString(values));
+		if(windows.containsKey(graph)){
+			windows.get(graph).update(values);
+		}
+		else windows.put(graph, createGraph(graph));
 	}
 }
