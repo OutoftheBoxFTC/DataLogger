@@ -190,7 +190,7 @@ public class Window implements OnReceiveData, OnConnectionUpdate {
 	public void onReceiveData(String graph, double[] values) {
 		System.out.println("Received: " + Arrays.toString(values));
 		if(windows.containsKey(graph)){
-			windows.get(graph).update(values);
+			windows.get(graph).update(values, graph);
 		}
 		else windows.put(graph, createGraph(graph));
 	}

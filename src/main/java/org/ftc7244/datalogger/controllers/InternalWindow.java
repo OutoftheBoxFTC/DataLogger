@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitMenuButton;
 import javafx.scene.input.MouseEvent;
@@ -12,6 +13,7 @@ import javafx.scene.layout.Pane;
 import org.ftc7244.datalogger.listeners.OnInternalWindowExit;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class InternalWindow {
@@ -21,11 +23,13 @@ public class InternalWindow {
 	@FXML
 	public BorderPane node;
 	@FXML
-	private LineChart<?, ?> lineGraph;
+	private LineChart<Number, Number> lineGraph;
 	@FXML
 	private Label titleLabel;
 	@FXML
 	private SplitMenuButton mergeDropdown;
+
+	private HashMap<String, XYChart.Series> series;
 
 	private double xDragDelta, yDragDelta, mouseX, mouseY;
 	private List<OnInternalWindowExit> exitListeners;
@@ -44,6 +48,8 @@ public class InternalWindow {
 
 		node.setMinWidth(node.getPrefWidth());
 		node.setMinHeight(node.getPrefHeight());
+
+		series = new HashMap<>();
 	}
 
 	public void setTitle(String title) {
@@ -182,7 +188,13 @@ public class InternalWindow {
 		return value;
 	}
 
-    public void update(double[] values) {
-
+	public void update(double[] values, String tag) {
+	    if(!series.containsKey(tag)){
+            XYChart.Series series = new XYChart.Series();
+            series.setName(tag);
+            lineGraph.getData().add(series);
+	        this.series.put(tag, series);
+        }
+        series.get(tag).getData().addAll(values);
     }
 }
