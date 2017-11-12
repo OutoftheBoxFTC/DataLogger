@@ -1,0 +1,91 @@
+package org.ftc7244.datalogger.controllers;
+
+import javafx.collections.FXCollections;
+import javafx.scene.Node;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Control;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+
+import java.util.Enumeration;
+
+/**
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * <p>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * <p>
+ * Written By: brandon on 10/10/17
+ */
+public class Variable<T> extends HBox {
+
+    private Label name;
+
+    private static <K> Variable<K> createVariable(String label, String value, Class<K> type) {
+        return new Variable<K>(label, matchControl(type));
+    }
+
+    private static Control matchControl(Class type) {
+        if (Type.INTEGER.isSupported(type)) {
+            return new Variable<>();
+        } else if (Type.DOUBLE.isSupported(type)) {
+
+        } else if (Type.FLOAT.isSupported(type)) {
+
+        } else if (Type.BOOLEAN.isSupported(type)) {
+            ChoiceBox<String> box = new ChoiceBox<>(FXCollections.observableArrayList("True", "False"));
+            box.
+        } else if (Type.ENUMERATION.isSupported(type)) {
+
+        } else {
+            throw new IllegalArgumentException("Type of " + type.getName() + " is not supported");
+        }
+        //
+        //
+    }
+
+    protected Variable(String label, Control control) {
+        super(new Label(label), control);
+        name = (Label) getChildren().get(0);
+        Control node = (Control) getChildren().get(1);
+        name.setPrefWidth(180);
+        node.setPrefWidth(180);
+    }
+
+    public enum Type {
+        INTEGER(int.class, Integer.class),
+        LONG(long.class, Long.class),
+        DOUBLE(double.class, Double.class),
+        FLOAT(float.class, Float.class),
+        ENUMERATION(Enum.class),
+        BOOLEAN(boolean.class, Boolean.class);
+
+        private Class[] supportedTypes;
+
+        Type(Class... supportedTypes) {
+            this.supportedTypes = supportedTypes;
+        }
+
+        public Class[] getSupportedTypes() {
+            return supportedTypes;
+        }
+
+        public boolean isSupported(Class type) {
+            boolean supported = false;
+            for (Class testType : supportedTypes) {
+                if (testType.isAssignableFrom(type))
+                    supported = true;
+            }
+            return supported;
+        }
+    }
+}*/
