@@ -58,7 +58,8 @@ public class DataStreamer {
 				double[] data = new double[split.length - 1];
 				for (int i = 1; i < split.length; i++)
 					data[i - 1] = Double.parseDouble(split[i]);
-				this.onDataReceived.forEach(x -> x.onReceiveData(tag, data));
+				//this.onDataReceived.forEach(x -> x.onReceiveData(tag, data));
+				System.out.println(in);
 			}
 		} catch (IOException e) {
 			this.onConnectionUpdates.forEach(x -> x.onConnectionUpdate(false, e));
