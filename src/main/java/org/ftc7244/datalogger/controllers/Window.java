@@ -1,5 +1,4 @@
 package org.ftc7244.datalogger.controllers;
-
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -188,10 +187,9 @@ public class Window implements OnReceiveData, OnConnectionUpdate {
 
 	@Override
 	public void onReceiveData(String graph, double[] values) {
-		System.out.println("Received: " + Arrays.toString(values));
-		if(windows.containsKey(graph)){
+		Platform.runLater(() -> {
+			if(!windows.containsKey(graph))windows.put(graph, createGraph(graph));
 			windows.get(graph).update(values, graph);
-		}
-		else windows.put(graph, createGraph(graph));
+		});
 	}
 }

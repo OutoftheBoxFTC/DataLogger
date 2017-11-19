@@ -59,6 +59,5 @@ public class DataLogger extends Application {
 		});
 		setAppIcon(stage, "/icon.png");
 		stage.show();
-
 	}
 }
