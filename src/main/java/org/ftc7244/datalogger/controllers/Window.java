@@ -166,7 +166,7 @@ public class Window implements OnReceiveData, OnConnectionUpdate {
 	private void updateStatus(boolean status, Label label) {
 		label.setText(status ? "Yes" : "No");
 		label.setTextFill(status ? Color.GREEN : Color.RED);
-	}
+	}//
 
 	@Override
 	public void onConnectionUpdate(boolean connected, Exception exception) {
