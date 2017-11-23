@@ -8,5 +8,5 @@ import org.ftc7244.datalogger.controllers.InternalWindow;
  */
 public interface OnInternalWindowExit {
 
-	void onInternalWindowExit(InternalWindow window, Pane pane);
+    void onInternalWindowExit(InternalWindow window, Pane pane);
 }
