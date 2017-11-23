@@ -72,7 +72,7 @@ public class DataStreamer {
             stop();
             try {
                 if (socket != null)
-                    socket.close();//
+                    socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
