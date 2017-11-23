@@ -34,21 +34,15 @@ public class DataStreamer {
     public DataStreamer(String ip, int port) {
         this.port = port;
         this.ip = ip;
-        running = new AtomicBoolean(false);
-        onConnectionUpdates = new HashSet<>();
-        onDataReceived = new HashSet<>();
+		this.running = new AtomicBoolean(false);
+		this.onConnectionUpdates = new HashSet<>();
+		this.onDataReceived = new HashSet<>();
     }
 
     public DataStreamer start() {
         if (!running.get()) {
             running.set(true);
             DataLogger.getService().submit(this::run);
-            DataLogger.getService().scheduleAtFixedRate(
-                    ()->{if(socket != null && socket.isClosed())close();},
-                    0,
-                    100,
-                    TimeUnit.MILLISECONDS
-            );
         }
         return this;
     }
@@ -56,9 +50,10 @@ public class DataStreamer {
     private void run() {
         try {
             socket = new Socket(ip, port);
+            socket.setSoTimeout(500);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            this.onConnectionUpdates.forEach(x -> x.onConnectionUpdate(true, null));
-            while (!Thread.currentThread().isInterrupted()) {
+            onConnectionUpdates.forEach(x -> x.onConnectionUpdate(true, null));
+            while (!Thread.currentThread().isInterrupted() && socket.isConnected()) {
                 String[] split = in.readLine().split(":");
                 String tag = split[0];
                 double[] data = new double[split.length - 1];
@@ -67,10 +62,11 @@ public class DataStreamer {
                 this.onDataReceived.forEach(x -> x.onReceiveData(tag, data));
             }
         } catch (IOException e) {
-            this.onConnectionUpdates.forEach(x -> x.onConnectionUpdate(false, e));
+            onConnectionUpdates.forEach(x -> x.onConnectionUpdate(false, e));
         } finally {
-            stop();
-            try {
+			running.set(false);
+			onConnectionUpdates.forEach(x -> x.onConnectionUpdate(false, null));
+			try {
                 if (socket != null)
                     socket.close();
             } catch (IOException e) {
@@ -79,18 +75,8 @@ public class DataStreamer {
         }
     }
 
-    private void close(){
-        DataLogger.getService().shutdown();
-        stop();
-        this.onConnectionUpdates.forEach(x -> x.onConnectionUpdate(false, null));
-    }
-
     public boolean isRunning() {
         return running.get();
-    }
-
-    public void stop() {
-        running.set(false);
     }
 
     public DataStreamer addConnectionListener(OnConnectionUpdate onConnectionUpdate) {
@@ -99,7 +85,7 @@ public class DataStreamer {
     }
 
     public DataStreamer addDataListener(OnReceiveData onDataReceived) {
-        this.onDataReceived.add(onDataReceived);
+		this.onDataReceived.add(onDataReceived);
         return this;
     }
 }
