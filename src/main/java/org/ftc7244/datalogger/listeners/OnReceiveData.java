@@ -6,3 +6,4 @@ package org.ftc7244.datalogger.listeners;
 public interface OnReceiveData {
     void onReceiveData(String graph, double[] values);
 }
+//
