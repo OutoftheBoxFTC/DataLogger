@@ -54,7 +54,10 @@ public class DataStreamer {
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             onConnectionUpdates.forEach(x -> x.onConnectionUpdate(true, null));
             while (!Thread.currentThread().isInterrupted() && socket.isConnected()) {
-                String[] split = in.readLine().split(":");
+				String raw = in.readLine();
+				if (raw.equals("PING"))
+					continue;
+            	String[] split = raw.split(":");
                 String tag = split[0];
                 double[] data = new double[split.length - 1];
                 for (int i = 1; i < split.length; i++)
