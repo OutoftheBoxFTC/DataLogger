@@ -80,11 +80,6 @@ public class Window implements OnReceiveData, OnConnectionUpdate, OnMergeChart, 
     }
 
     @FXML
-    protected void onHardRest(ActionEvent event) {
-
-    }
-
-    @FXML
     public void onRefreshADB(ActionEvent event) {
         DataLogger.getService().execute(() -> {
             if (connection == null) {

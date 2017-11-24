@@ -50,13 +50,15 @@ public class DataStreamer {
     private void run() {
         try {
             socket = new Socket(ip, port);
-            socket.setSoTimeout(500);
+            socket.setSoTimeout(5000000);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             onConnectionUpdates.forEach(x -> x.onConnectionUpdate(true, null));
             while (!Thread.currentThread().isInterrupted() && socket.isConnected()) {
 				String raw = in.readLine();
-				if (raw.equals("PING"))
-					continue;
+				if (raw.equals("PING")){
+				    System.out.println("PING : " + System.currentTimeMillis());
+				    continue;
+                }
             	String[] split = raw.split(":");
                 String tag = split[0];
                 double[] data = new double[split.length - 1];
@@ -64,7 +66,7 @@ public class DataStreamer {
                     data[i - 1] = Double.parseDouble(split[i]);
                 this.onDataReceived.forEach(x -> x.onReceiveData(tag, data));
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             onConnectionUpdates.forEach(x -> x.onConnectionUpdate(false, e));
         } finally {
 			running.set(false);
