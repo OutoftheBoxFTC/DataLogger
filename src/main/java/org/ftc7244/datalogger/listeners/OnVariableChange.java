@@ -17,5 +17,5 @@ package org.ftc7244.datalogger.listeners;
  * Written By: brandon on 10/10/17
  */
 public interface OnVariableChange<T> {
-    void onChange(T oldValue, T newValue);
+	void onChange(T oldValue, T newValue);
 }

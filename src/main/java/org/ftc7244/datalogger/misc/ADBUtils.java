@@ -21,92 +21,92 @@ import java.net.URLDecoder;
  */
 public class ADBUtils {
 
-    private static OperatingSystem cachedOS;
+	private static OperatingSystem cachedOS;
 
-    public static ADBResult exec(String command, String... args) {
-        if (!isSupported()) {
-            return new ADBResult(false, "Unsupported device!");
-        }
+	public static ADBResult exec(String command, String... args) {
+		if (!isSupported()) {
+			return new ADBResult(false, "Unsupported device!");
+		}
 
-        try {
-            String[] commandGroup = new String[args.length + 2];
-            String path = ADBUtils.class.getResource(getOperatingSystem().ADB_PATH).getFile();
-            path = URLDecoder.decode(path, "UTF-8");
-            path = new File(path).getAbsolutePath();
+		try {
+			String[] commandGroup = new String[args.length + 2];
+			String path = ADBUtils.class.getResource(getOperatingSystem().ADB_PATH).getFile();
+			path = URLDecoder.decode(path, "UTF-8");
+			path = new File(path).getAbsolutePath();
 
-            commandGroup[0] = path;
-            commandGroup[1] = command;
-            System.arraycopy(args, 0, commandGroup, 2, args.length);
+			commandGroup[0] = path;
+			commandGroup[1] = command;
+			System.arraycopy(args, 0, commandGroup, 2, args.length);
 
-            Process exec = Runtime.getRuntime().exec(commandGroup);
-            boolean successful = exec.waitFor() == 0;
-            String output = DeviceUtils.toString(exec.getInputStream())
-                    + "\n"
-                    + DeviceUtils.toString(exec.getErrorStream());
-            return new ADBResult(successful, output);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ADBResult(false, e.getMessage());
-        }
-    }
+			Process exec = Runtime.getRuntime().exec(commandGroup);
+			boolean successful = exec.waitFor() == 0;
+			String output = DeviceUtils.toString(exec.getInputStream())
+					+ "\n"
+					+ DeviceUtils.toString(exec.getErrorStream());
+			return new ADBResult(successful, output);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ADBResult(false, e.getMessage());
+		}
+	}
 
-    public static boolean start() {
-        return exec("start-server").isSuccessful();
-    }
+	public static boolean start() {
+		return exec("start-server").isSuccessful();
+	}
 
-    public static boolean stop() {
-        return exec("kill-server").isSuccessful();
-    }
+	public static boolean stop() {
+		return exec("kill-server").isSuccessful();
+	}
 
-    public static OperatingSystem getOperatingSystem() {
-        String osName = System.getProperty("os.name", "generic").toLowerCase();
-        if (cachedOS == null) {
-            if (osName.contains("mac") || osName.contains("darwin")) {
-                cachedOS = OperatingSystem.OSX;
-            } else if (osName.contains("win")) {
-                cachedOS = OperatingSystem.WINDOWS;
-            } else if (osName.contains("nux")) {
-                cachedOS = OperatingSystem.LINUX;
-            } else {
-                cachedOS = OperatingSystem.UNKNOWN;
-            }
-        }
-        return cachedOS;
-    }
+	public static OperatingSystem getOperatingSystem() {
+		String osName = System.getProperty("os.name", "generic").toLowerCase();
+		if (cachedOS == null) {
+			if (osName.contains("mac") || osName.contains("darwin")) {
+				cachedOS = OperatingSystem.OSX;
+			} else if (osName.contains("win")) {
+				cachedOS = OperatingSystem.WINDOWS;
+			} else if (osName.contains("nux")) {
+				cachedOS = OperatingSystem.LINUX;
+			} else {
+				cachedOS = OperatingSystem.UNKNOWN;
+			}
+		}
+		return cachedOS;
+	}
 
-    public static boolean isSupported() {
-        return getOperatingSystem() != OperatingSystem.UNKNOWN;
-    }
+	public static boolean isSupported() {
+		return getOperatingSystem() != OperatingSystem.UNKNOWN;
+	}
 
 
-    public enum OperatingSystem {
-        WINDOWS("/adb/win/adb.exe"),
-        OSX("/adb/osx"),
-        LINUX("/adb/linux"),
-        UNKNOWN(null);
+	public enum OperatingSystem {
+		WINDOWS("/adb/win/adb.exe"),
+		OSX("/adb/osx"),
+		LINUX("/adb/linux"),
+		UNKNOWN(null);
 
-        private final String ADB_PATH;
+		private final String ADB_PATH;
 
-        OperatingSystem(String adbPath) {
-            this.ADB_PATH = adbPath;
-        }
-    }
+		OperatingSystem(String adbPath) {
+			this.ADB_PATH = adbPath;
+		}
+	}
 
-    public static class ADBResult {
-        private boolean successful;
-        private String output;
+	public static class ADBResult {
+		private boolean successful;
+		private String output;
 
-        public ADBResult(boolean successful, String output) {
-            this.successful = successful;
-            this.output = output;
-        }
+		public ADBResult(boolean successful, String output) {
+			this.successful = successful;
+			this.output = output;
+		}
 
-        public boolean isSuccessful() {
-            return successful;
-        }
+		public boolean isSuccessful() {
+			return successful;
+		}
 
-        public String getOutput() {
-            return output;
-        }
-    }
+		public String getOutput() {
+			return output;
+		}
+	}
 }
