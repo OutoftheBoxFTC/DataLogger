@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.ftc7244.datalogger.misc.ADBUtils;
 
@@ -47,7 +48,7 @@ public class DataLogger extends Application {
 
 	public void start(Stage stage) throws Exception {
 		URL resource = getClass().getResource("/window.fxml");
-		SplitPane root = FXMLLoader.load(resource);
+		VBox root = FXMLLoader.load(resource);
 		stage.setTitle("Data Logger");
 		stage.setScene(new Scene(root));
 		stage.setMinHeight(root.getMinHeight());

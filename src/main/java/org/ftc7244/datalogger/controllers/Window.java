@@ -217,4 +217,18 @@ public class Window implements OnReceiveData, OnConnectionUpdate, OnMergeChart, 
 		Collection<InternalWindow> windows = this.windows.values();
 		windows.forEach(x -> x.setMergeable(new HashSet<>(windows)));
 	}
+	@FXML
+	private void onClearAll(){
+
+	}
+
+	@FXML
+	private void onDeleteAll(){
+
+	}
+
+	@FXML
+	private void onDistribute(){
+
+	}
 }

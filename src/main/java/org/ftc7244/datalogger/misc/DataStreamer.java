@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -59,6 +60,10 @@ public class DataStreamer {
 				String[] split = raw.split(":");
 				String tag = split[0];
 				double[] data = new double[split.length - 1];
+				System.out.println(tag + ": ");
+				for(double point : data){
+					System.out.println(point);
+				}
 				for (int i = 1; i < split.length; i++)
 					data[i - 1] = Double.parseDouble(split[i]);
 				this.onDataReceived.forEach(x -> x.onReceiveData(tag, data));

@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ftc7244.datalogger.controllers.Window">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="380.0" minWidth="570.0" prefHeight="550.0" prefWidth="920.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ftc7244.datalogger.controllers.Window">
    <children>
       <MenuBar>
         <menus>
@@ -23,17 +22,17 @@
                         <MenuItem mnemonicParsing="false" text="D" />
                      </items>
                   </Menu>
-              <MenuItem mnemonicParsing="false" text="Clear All">
+              <MenuItem mnemonicParsing="false" onAction="#onClearAll" text="Clear All">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="W" control="UP" meta="DOWN" shift="DOWN" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" text="Delete All">
+                  <MenuItem mnemonicParsing="false" onAction="#onDeleteAll" text="Delete All">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="D" control="UP" meta="DOWN" shift="DOWN" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" text="Distribute">
+                  <MenuItem mnemonicParsing="false" onAction="#onDistribute" text="Distribute">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="G" control="UP" meta="DOWN" shift="UP" shortcut="UP" />
                      </accelerator>
@@ -42,6 +41,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
+                  <MenuItem mnemonicParsing="false" text="Troubleshoot" />
               <MenuItem mnemonicParsing="false" text="About">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="I" control="UP" meta="DOWN" shift="UP" shortcut="UP" />
@@ -49,9 +49,15 @@
                   </MenuItem>
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Variables">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Clear All" />
+                  <MenuItem mnemonicParsing="false" text="Refresh" />
+              </items>
+            </Menu>
         </menus>
       </MenuBar>
-      <SplitPane dividerPositions="0.225752508361204" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="350.0" minWidth="570.0" prefHeight="550.0" prefWidth="920.0" stylesheets="@style.css">
+      <SplitPane dividerPositions="0.225752508361204" stylesheets="@style.css">
          <items>
             <VBox fillWidth="false" maxWidth="180.0" minWidth="180.0" prefHeight="550.0" prefWidth="180.0" spacing="5.0" SplitPane.resizableWithParent="false">
                <children>
