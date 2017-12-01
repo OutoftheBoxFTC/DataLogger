@@ -1,72 +1,121 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.input.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<SplitPane dividerPositions="0.225752508361204" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="350.0" minWidth="570.0" prefHeight="550.0" prefWidth="920.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ftc7244.datalogger.controllers.Window">
-   <items>
-      <VBox fillWidth="false" maxWidth="180.0" minWidth="180.0" prefHeight="550.0" prefWidth="180.0" spacing="5.0" SplitPane.resizableWithParent="false">
-         <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="180.0" text="Phone Controller" textAlignment="CENTER">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Separator prefWidth="200.0" />
-            <MenuButton fx:id="devices" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="180.0" text="Connect" textAlignment="CENTER" />
-            <Button fx:id="adbButton" disable="true" mnemonicParsing="false" onAction="#onRefreshADB" prefHeight="25.0" prefWidth="180.0" text="Waiting..." />
-            <Separator prefWidth="200.0" />
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="180.0" text="Status" textAlignment="CENTER">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Separator prefWidth="200.0" />
-            <BorderPane prefHeight="20.0" prefWidth="180.0">
-               <left>
-                  <Label text="Connected:" BorderPane.alignment="CENTER" />
-               </left>
-               <right>
-                  <Label fx:id="connectionStatus" text="No" textFill="RED" BorderPane.alignment="CENTER" />
-               </right>
-            </BorderPane>
-            <BorderPane layoutX="10.0" layoutY="126.0" prefHeight="20.0" prefWidth="180.0">
-               <left>
-                  <Label text="ADB:" BorderPane.alignment="CENTER" />
-               </left>
-               <right>
-                  <Label fx:id="adbStatus" text="No" textFill="RED" BorderPane.alignment="CENTER" />
-               </right>
-            </BorderPane>
-            <Separator prefWidth="200.0" />
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="180.0" text="Variable Controller" textAlignment="CENTER">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Separator prefWidth="200.0">
-               <VBox.margin>
-                  <Insets left="-5.0" right="-5.0" />
-               </VBox.margin>
-            </Separator>
-            <ScrollPane fitToWidth="true" prefHeight="445.0" prefWidth="180.0" style="-fx-background-color: transparent;">
-               <content>
-                  <VBox fx:id="variables" minWidth="160.0" prefHeight="200.0" prefWidth="160.0" spacing="4.0">
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </VBox>
-               </content>
-               <VBox.margin>
-                  <Insets bottom="-10.0" left="-5.0" right="-5.0" top="-8.0" />
-               </VBox.margin>
-            </ScrollPane>
-         </children>
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
-      </VBox>
-      <AnchorPane fx:id="contentPane" minHeight="0.0" minWidth="0.0" prefHeight="451.0" prefWidth="524.0" style="-fx-font-color: red;" />
-   </items>
-</SplitPane>
+
+
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ftc7244.datalogger.controllers.Window">
+   <children>
+      <MenuBar>
+        <menus>
+          <Menu mnemonicParsing="false" text="Graph">
+            <items>
+                  <Menu mnemonicParsing="false" text="Bring to Focus...">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="P" />
+                        <MenuItem mnemonicParsing="false" text="I" />
+                        <MenuItem mnemonicParsing="false" text="D" />
+                     </items>
+                  </Menu>
+              <MenuItem mnemonicParsing="false" text="Clear All">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="W" control="UP" meta="DOWN" shift="DOWN" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" text="Delete All">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="D" control="UP" meta="DOWN" shift="DOWN" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" text="Distribute">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="G" control="UP" meta="DOWN" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="I" control="UP" meta="DOWN" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <SplitPane dividerPositions="0.225752508361204" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="350.0" minWidth="570.0" prefHeight="550.0" prefWidth="920.0" stylesheets="@style.css">
+         <items>
+            <VBox fillWidth="false" maxWidth="180.0" minWidth="180.0" prefHeight="550.0" prefWidth="180.0" spacing="5.0" SplitPane.resizableWithParent="false">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="180.0" text="Phone Controller" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Separator prefWidth="200.0" />
+                  <MenuButton fx:id="devices" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="180.0" text="Connect" textAlignment="CENTER" />
+                  <Button fx:id="adbButton" disable="true" mnemonicParsing="false" onAction="#onRefreshADB" prefHeight="25.0" prefWidth="180.0" text="Waiting..." />
+                  <Separator prefWidth="200.0" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="180.0" text="Status" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Separator prefWidth="200.0" />
+                  <BorderPane prefHeight="20.0" prefWidth="180.0">
+                     <left>
+                        <Label text="Connected:" BorderPane.alignment="CENTER" />
+                     </left>
+                     <right>
+                        <Label fx:id="connectionStatus" text="No" textFill="RED" BorderPane.alignment="CENTER" />
+                     </right>
+                  </BorderPane>
+                  <BorderPane layoutX="10.0" layoutY="126.0" prefHeight="20.0" prefWidth="180.0">
+                     <left>
+                        <Label text="ADB:" BorderPane.alignment="CENTER" />
+                     </left>
+                     <right>
+                        <Label fx:id="adbStatus" text="No" textFill="RED" BorderPane.alignment="CENTER" />
+                     </right>
+                  </BorderPane>
+                  <Separator prefWidth="200.0" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="180.0" text="Variable Controller" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Separator prefWidth="200.0">
+                     <VBox.margin>
+                        <Insets left="-5.0" right="-5.0" />
+                     </VBox.margin>
+                  </Separator>
+                  <ScrollPane fitToWidth="true" prefHeight="445.0" prefWidth="180.0" style="-fx-background-color: transparent;">
+                     <content>
+                        <VBox fx:id="variables" minWidth="160.0" prefHeight="200.0" prefWidth="160.0" spacing="4.0">
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </VBox>
+                     </content>
+                     <VBox.margin>
+                        <Insets bottom="-10.0" left="-5.0" right="-5.0" top="-8.0" />
+                     </VBox.margin>
+                  </ScrollPane>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
+            <AnchorPane fx:id="contentPane" minHeight="0.0" minWidth="0.0" prefHeight="451.0" prefWidth="524.0" style="-fx-font-color: red;" />
+         </items>
+      </SplitPane>
+   </children>
+</VBox>
