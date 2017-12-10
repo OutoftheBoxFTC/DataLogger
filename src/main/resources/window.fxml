@@ -15,13 +15,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="Graph">
             <items>
-                  <Menu mnemonicParsing="false" text="Bring to Focus...">
-                     <items>
-                        <MenuItem mnemonicParsing="false" text="P" />
-                        <MenuItem mnemonicParsing="false" text="I" />
-                        <MenuItem mnemonicParsing="false" text="D" />
-                     </items>
-                  </Menu>
+                  <Menu mnemonicParsing="false" text="Bring to Focus..." />
               <MenuItem mnemonicParsing="false" onAction="#onClearAll" text="Clear All">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="W" control="UP" meta="DOWN" shift="DOWN" shortcut="UP" />
@@ -35,6 +29,11 @@
                   <MenuItem mnemonicParsing="false" onAction="#onDistribute" text="Distribute">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="G" control="UP" meta="DOWN" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#onExportSession" text="Export Session">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="W" control="UP" meta="DOWN" shift="DOWN" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
             </items>
@@ -57,7 +56,7 @@
             </Menu>
         </menus>
       </MenuBar>
-      <SplitPane dividerPositions="0.225752508361204" stylesheets="@style.css">
+      <SplitPane dividerPositions="0.225752508361204" maxHeight="-Infinity" prefHeight="684.0" prefWidth="923.0" stylesheets="@style.css">
          <items>
             <VBox fillWidth="false" maxWidth="180.0" minWidth="180.0" prefHeight="550.0" prefWidth="180.0" spacing="5.0" SplitPane.resizableWithParent="false">
                <children>

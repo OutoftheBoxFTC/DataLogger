@@ -1,5 +1,6 @@
 package org.ftc7244.datalogger.controllers;
 
+import com.oracle.javafx.jmx.json.JSONDocument;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import jdk.nashorn.internal.ir.debug.JSONWriter;
 import org.ftc7244.datalogger.DataLogger;
 import org.ftc7244.datalogger.listeners.OnConnectionUpdate;
 import org.ftc7244.datalogger.listeners.OnInternalWindowExit;
@@ -22,6 +24,9 @@ import org.ftc7244.datalogger.misc.DeviceUtils;
 import se.vidstige.jadb.JadbConnection;
 import se.vidstige.jadb.JadbDevice;
 
+import javax.swing.*;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.util.*;
@@ -230,5 +235,18 @@ public class Window implements OnReceiveData, OnConnectionUpdate, OnMergeChart, 
 	@FXML
 	private void onDistribute(){
 
+	}
+	@FXML
+	private void onExportSession(){
+		JFileChooser chooser = new JFileChooser();
+		chooser.setDialogTitle("Choose Save Directory");
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		chooser.setMultiSelectionEnabled(false);
+		chooser.setAcceptAllFileFilterUsed(false);
+		chooser.setDragEnabled(false);
+		if(chooser.showSaveDialog(null)==JFileChooser.APPROVE_OPTION){
+			File directory = new File(chooser.getCurrentDirectory().getPath() + "/session");
+			windows.entrySet().forEach((x)->x.getValue().saveTo(directory.getPath()));
+		}
 	}
 }

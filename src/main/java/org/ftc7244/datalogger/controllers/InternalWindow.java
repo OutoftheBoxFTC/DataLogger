@@ -1,21 +1,30 @@
 package org.ftc7244.datalogger.controllers;
 
 import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import org.ftc7244.datalogger.listeners.OnInternalWindowExit;
 import org.ftc7244.datalogger.listeners.OnMergeChart;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class InternalWindow {
@@ -263,5 +272,31 @@ public class InternalWindow {
 			data.put(tag, numbers);
 		});
 		return data;
+	}
+
+	public void saveTo(String path){
+		series.entrySet().forEach((x)->{
+			File file = new File(path + "/" + x.getKey());
+			try {
+				FileWriter writer = new FileWriter(file);
+				x.getValue().getData().forEach((y)->{
+					try {
+						writer.write(y.getYValue() + "");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				});
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
+		WritableImage lineGraph = new WritableImage((int)this.lineGraph.getWidth(), (int) this.lineGraph.getHeight());
+		this.lineGraph.snapshot(new SnapshotParameters(), lineGraph);
+		RenderedImage image = SwingFXUtils.fromFXImage(lineGraph, null);
+		try {
+			ImageIO.write(image,  "png", new File(path + "/" + titleLabel.getText()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
