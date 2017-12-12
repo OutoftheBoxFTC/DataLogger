@@ -27,7 +27,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.ConnectException;
-import java.security.cert.Extension;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -241,13 +240,7 @@ public class Window implements OnReceiveData, OnConnectionUpdate, OnMergeChart, 
 		File file = chooser.showSaveDialog(null);
 		if(file != null){
 			file.mkdir();
-			windows.entrySet().forEach((x) -> {
-				try {
-					x.getValue().saveTo(file.getCanonicalPath());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			});
+			windows.entrySet().forEach((x) -> x.getValue().saveTo(file.getAbsolutePath()));
 		}
 	}
 }

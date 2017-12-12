@@ -276,7 +276,7 @@ public class InternalWindow {
 
 	public void saveTo(String path){
 		series.entrySet().forEach((x)->{
-			File file = new File(path + "/" + x.getKey());
+			File file = new File(path + "//" + x.getKey());
 			try {
 				FileWriter writer = new FileWriter(file);
 				x.getValue().getData().forEach((y)->{
@@ -294,7 +294,7 @@ public class InternalWindow {
 		this.lineGraph.snapshot(new SnapshotParameters(), lineGraph);
 		RenderedImage image = SwingFXUtils.fromFXImage(lineGraph, null);
 		try {
-			ImageIO.write(image,  "png", new File(path + "/" + titleLabel.getText()));
+			ImageIO.write(image,  "png", new File(path + "//" + titleLabel.getText()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
