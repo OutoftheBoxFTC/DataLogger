@@ -1,30 +1,23 @@
 package org.ftc7244.datalogger.controllers;
 
 import javafx.application.Platform;
-import javafx.embed.swing.SwingFXUtils;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import org.ftc7244.datalogger.listeners.OnInternalWindowExit;
 import org.ftc7244.datalogger.listeners.OnMergeChart;
+import org.ftc7244.datalogger.misc.DataStorage;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
 
 public class InternalWindow {
@@ -274,29 +267,33 @@ public class InternalWindow {
 		return data;
 	}
 
-	public void saveTo(String path){
-		series.entrySet().forEach((x)->{
-			File file = new File(path + "//" + x.getKey());
-			try {
-				FileWriter writer = new FileWriter(file);
-				x.getValue().getData().forEach((y)->{
-					try {
-						writer.write(y.getYValue() + "");
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				});
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+	public void saveTo(DataStorage storage) {
+		series.entrySet().forEach((x) -> x.getValue().getData().forEach((y)->storage.add(y.getYValue().doubleValue())));
+	}
+
+	public void init(String[] tags, DataStorage data) {
+
+	}
+
+	public void onNormalize() {
+		series.keySet().forEach((x)->{
+			XYChart.Series<Number, Number> data = series.get(x);
+			normalize(data.getData());
 		});
-		WritableImage lineGraph = new WritableImage((int)this.lineGraph.getWidth(), (int) this.lineGraph.getHeight());
-		this.lineGraph.snapshot(new SnapshotParameters(), lineGraph);
-		RenderedImage image = SwingFXUtils.fromFXImage(lineGraph, null);
-		try {
-			ImageIO.write(image,  "png", new File(path + "//" + titleLabel.getText()));
-		} catch (IOException e) {
-			e.printStackTrace();
+	}
+
+	private void normalize(ObservableList<XYChart.Data<Number, Number>> data){
+		double max = 0;
+		for(XYChart.Data<Number, Number> point : data){
+			max = Math.max(max, Math.abs(point.getYValue().doubleValue()));
+		}
+		final double finalMax = max;
+		if(max!=0){
+			Platform.runLater(()->{
+				for(XYChart.Data<Number, Number> point : data){
+					point.setYValue(point.getYValue().doubleValue()/finalMax);
+				}
+			});
 		}
 	}
 }

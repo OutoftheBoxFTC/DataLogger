@@ -18,13 +18,14 @@ import org.ftc7244.datalogger.listeners.OnInternalWindowExit;
 import org.ftc7244.datalogger.listeners.OnMergeChart;
 import org.ftc7244.datalogger.listeners.OnReceiveData;
 import org.ftc7244.datalogger.misc.ADBUtils;
+import org.ftc7244.datalogger.misc.DataStorage;
 import org.ftc7244.datalogger.misc.DataStreamer;
 import org.ftc7244.datalogger.misc.DeviceUtils;
 import se.vidstige.jadb.JadbConnection;
 import se.vidstige.jadb.JadbDevice;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.util.*;
@@ -47,6 +48,8 @@ public class Window implements OnReceiveData, OnConnectionUpdate, OnMergeChart, 
 	private AnchorPane contentPane;
 	@FXML
 	private DataStreamer streamer;
+
+	private boolean updated;
 
 	private JadbConnection connection;
 	private Map<String, InternalWindow> windows;
@@ -80,6 +83,7 @@ public class Window implements OnReceiveData, OnConnectionUpdate, OnMergeChart, 
 			setADBStatus(connected);
 
 		}, 0, 100, TimeUnit.MILLISECONDS);
+		updated = false;
 	}
 
 	@FXML
@@ -103,16 +107,18 @@ public class Window implements OnReceiveData, OnConnectionUpdate, OnMergeChart, 
 					.addDataListener(this)
 					.start();
 		} else {
-			devices.setDisable(false);
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Invalid IP!");
-			alert.setHeaderText("App Not Started!");
-			alert.setContentText("We were unable to parse a valid IP address from the device. Please check the console for more info!");
-			alert.show();
+			Platform.runLater(()->{
+				devices.setDisable(false);
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Invalid IP!");
+				alert.setHeaderText("App Not Started!");
+				alert.setContentText("We were unable to parse a valid IP address from the device. Please check the console for more info!");
+				alert.show();
+			});
 		}
 	}
 
-	protected InternalWindow createGraph(String title) {
+	private InternalWindow createGraph(String title) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/internal-window.fxml"));
 		try {
 			Pane load = loader.load();
@@ -139,8 +145,8 @@ public class Window implements OnReceiveData, OnConnectionUpdate, OnMergeChart, 
 
 		return loader.<InternalWindow>getController()
 				.setTitle(title)
-				.addWindowExitListener(this::onInternalWindowExit)
-				.addMergeListener(this::onMergeChart);
+				.addWindowExitListener(this)
+				.addMergeListener(this);
 	}
 
 	private void updateDeviceList(Map<JadbDevice, String> devices) {
@@ -222,7 +228,16 @@ public class Window implements OnReceiveData, OnConnectionUpdate, OnMergeChart, 
 	}
 	@FXML
 	private void onClearAll(){
-
+		if(updated) {
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Session Unsaved");
+			alert.setContentText("Are you sure you want to clear your session without saving?");
+			Optional<ButtonType> selection = alert.showAndWait();
+			if (selection.equals(ButtonType.YES)) {
+				windows.entrySet().forEach((x)->x.getValue().onClearGraph(null));
+			}
+		}
+		else windows.entrySet().forEach((x)->x.getValue().onClearGraph(null));
 	}
 
 	@FXML
@@ -234,13 +249,51 @@ public class Window implements OnReceiveData, OnConnectionUpdate, OnMergeChart, 
 	private void onDistribute(){
 
 	}
+
 	@FXML
 	private void onExportSession(){
 		FileChooser chooser = new FileChooser();
+		chooser.setTitle("Save Session To directory");
+		chooser.showSaveDialog(null);
 		File file = chooser.showSaveDialog(null);
 		if(file != null){
-			file.mkdir();
-			windows.entrySet().forEach((x) -> x.getValue().saveTo(file.getAbsolutePath()));
+			DataStorage storage = new DataStorage();
+			windows.entrySet().forEach((x) -> {
+				DataStorage subStorage = new DataStorage();
+				x.getValue().saveTo(subStorage);
+				storage.addSubStorage(subStorage);
+			});
+		}
+	}
+
+	@FXML
+	private void onOpenSession(){
+		FileChooser chooser = new FileChooser();
+		chooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("txt"));
+		chooser.setTitle("Open Session from Directory");
+		File file = chooser.showOpenDialog(null);
+		if(file!=null){
+			if(updated){
+				Alert alert = new Alert(AlertType.CONFIRMATION);
+				alert.setTitle("Session Unsaved");
+				alert.setContentText("Are you sure you want to clear your session without saving?");
+				Optional<ButtonType> selection = alert.showAndWait();
+				if (selection.equals(ButtonType.YES)) {
+					try {
+						contentPane.getChildren().clear();
+						String input = new Scanner(file).nextLine();
+						String[] windows = input.substring(0, input.indexOf(')')).split("/");
+						DataStorage storage = new DataStorage(input.substring(input.indexOf(')')+1));
+						for (int i = 0; i < windows.length; i++) {
+							String[] subSections = windows[i].split(",");
+							InternalWindow window = createGraph(windows[i]);
+							window.init(subSections, storage.getSubStorage(i));
+						}
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
+				}
+			}
 		}
 	}
 }

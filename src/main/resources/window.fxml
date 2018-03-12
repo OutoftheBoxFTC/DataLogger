@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.input.*?>
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.input.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="380.0" minWidth="570.0" prefHeight="550.0" prefWidth="920.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ftc7244.datalogger.controllers.Window">
    <children>
       <MenuBar>
         <menus>
+            <Menu mnemonicParsing="false" text="File">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#onOpenSession" text="Open Session" />
+                  <MenuItem mnemonicParsing="false" onAction="#onExportSession" text="Export Session">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="W" control="UP" meta="DOWN" shift="DOWN" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+              </items>
+            </Menu>
           <Menu mnemonicParsing="false" text="Graph">
             <items>
                   <Menu mnemonicParsing="false" text="Bring to Focus..." />
@@ -29,11 +35,6 @@
                   <MenuItem mnemonicParsing="false" onAction="#onDistribute" text="Distribute">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="G" control="UP" meta="DOWN" shift="UP" shortcut="UP" />
-                     </accelerator>
-                  </MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#onExportSession" text="Export Session">
-                     <accelerator>
-                        <KeyCodeCombination alt="UP" code="W" control="UP" meta="DOWN" shift="DOWN" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
             </items>

@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.chart.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.layout.*?>
-<BorderPane fx:id="node" onMouseDragged="#onResizeDragged" onMouseMoved="#onResizeOver" onMousePressed="#onResizePressed" onMouseReleased="#onResizeReleased" prefHeight="322.0" prefWidth="380.0" styleClass="window" stylesheets="@style.css" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ftc7244.datalogger.controllers.InternalWindow">
+
+<BorderPane fx:id="node" onMouseDragged="#onResizeDragged" onMouseMoved="#onResizeOver" onMousePressed="#onResizePressed" onMouseReleased="#onResizeReleased" prefHeight="322.0" prefWidth="380.0" styleClass="window" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ftc7244.datalogger.controllers.InternalWindow">
    <center>
-      <LineChart fx:id="lineGraph" BorderPane.alignment="CENTER" animated="false" createSymbols="false">
+      <LineChart fx:id="lineGraph" animated="false" createSymbols="false" BorderPane.alignment="CENTER">
          <xAxis>
             <NumberAxis side="BOTTOM" />
          </xAxis>
@@ -39,6 +44,7 @@
          <right>
             <HBox prefHeight="25.0" spacing="5.0" BorderPane.alignment="CENTER">
                <children>
+                  <Button mnemonicParsing="false" onAction="#onNormalize" text="Normalize" />
                   <Button mnemonicParsing="false" onAction="#onClearGraph" text="Clear" />
                   <Button mnemonicParsing="false" onAction="#onExportGraph" text="Export" />
                   <MenuButton fx:id="mergeDropdown" mnemonicParsing="false" text="Merge" />

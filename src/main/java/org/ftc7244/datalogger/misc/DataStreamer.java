@@ -12,10 +12,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-/**
- * Created by FTC 7244 on 10/29/2017.
- */
 public class DataStreamer {
 
 	private static final int DEFAULT_PORT = 8709;
